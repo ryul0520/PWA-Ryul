@@ -143,29 +143,25 @@
         .stage-btn.cleared::before { content: '✔'; position: absolute; top: 2px; right: 2px; font-size: 0.7rem; }
         .stage-btn.in-progress { border: 2px solid var(--primary); color: var(--primary); }
 
-        /* [수정됨] 카드 컨테이너 레이아웃 수정 */
         .card-container { 
             flex: 1; display: flex; justify-content: center; align-items: center; 
             position: relative; perspective: 1200px; padding-bottom: 50px; 
-            overflow: hidden; /* 카드가 화면 밖으로 삐져나와 스크롤 생기는 것 방지 */
+            overflow: hidden;
         }
         .card-wrapper { 
             width: 85%; max-width: 340px; height: 65vh; max-height: 550px; 
-            /* position: absolute; 제거 -> Flexbox 중앙 정렬 활용 */
             transform-style: preserve-3d; 
-            /* 화면 중앙 정렬을 위해 margin auto나 flex box에 의존 */
         }
         .card-wrapper.animate { transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.1); }
         .card-inner { width: 100%; height: 100%; position: relative; text-align: center; transition: transform 0.6s; transform-style: preserve-3d; border-radius: 24px; box-shadow: 0 20px 50px rgba(0,0,0,0.15); }
         .card-inner.flipped { transform: rotateY(180deg); }
         
-        /* [수정됨] 카드 내용이 길 경우 스크롤 처리 및 정렬 */
         .card-face { 
             position: absolute; width: 100%; height: 100%; backface-visibility: hidden; 
             border-radius: 24px; display: flex; flex-direction: column; align-items: center; justify-content: center; 
             padding: 25px; 
-            overflow-y: auto; /* 내용 길면 스크롤 */
-            word-break: keep-all; word-wrap: break-word; /* 단어 끊김 방지 */
+            overflow-y: auto;
+            word-break: keep-all; word-wrap: break-word;
         }
         .card-front { background: white; color: #333; z-index: 2; }
         .card-back { background: #2C3E50; color: white; transform: rotateY(180deg); }
@@ -441,7 +437,12 @@
         const db = firebase.firestore();
         auth.setPersistence(firebase.auth.Auth.Persistence.LOCAL);
 
-        const subjectData = {math: {
+        const subjectData = {
+            /* 
+                이곳에 단어 데이터를 복사하여 붙여넣으세요.
+                아래와 같은 형식이어야 합니다.
+
+               math: {
                // [Stage 1] 극한과 연속 (Limits & Continuity)
             1: [
                 { en: "Limit", kr: "극한", ex: "Value a function approaches." },
@@ -5128,6 +5129,7 @@
             }
         };
 
+
         let currentUser = null;
         let userProgress = { math: [], chem: [], phys: [], csat: [], starredWords: [], history: {}, nickname: "" };
         let currentSubject='math', activeQueue=[], currentCardData=null, currentStageNum=0, isFavoritesMode=false, stageTotalCount=0;
@@ -5557,7 +5559,8 @@
                     if(!userProgress.history[hKey].includes(card.id)) userProgress.history[hKey].push(card.id);
                     saveProgress();
                 }
-                resetCardUI(); updateCard();
+                resetCardUI();
+                updateCard();
                 setTimeout(()=>gameUI.cardWrapper.classList.add('animate'),50);
             }, 300);
         }
