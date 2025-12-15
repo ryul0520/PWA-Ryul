@@ -22,3 +22,4 @@ if (lastUpdate !== UPDATE_ID) {
   // ✅ 업데이트 완료 기록
   localStorage.setItem("lastUpdateId", UPDATE_ID);
 }
+
